@@ -5,7 +5,7 @@ import CoveoFacets from "./Facets.vue";
 import SearchSummary from "./Summary.vue";
 import CoveoPager from "./Pager.vue";
 import { inject } from "vue";
-import type { SearchEngine } from "@coveo/headless";
+import { buildResultsPerPage, type SearchEngine } from "@coveo/headless";
 import { HeadlessInjectionKey } from "@/headlessKey";
 export default {
   components: {
@@ -17,6 +17,7 @@ export default {
   },
   async setup() {
     const engine: SearchEngine = await inject(HeadlessInjectionKey)!;
+    buildResultsPerPage(engine, { initialState: { numberOfResults: 6 } });
     engine.executeFirstSearch();
   },
 };
