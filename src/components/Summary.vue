@@ -9,26 +9,28 @@
 </template>
 
 <script lang="ts">
-import { inject, ref } from "vue";
+import { inject, reactive } from "vue";
 import { buildQuerySummary, type SearchEngine } from "@coveo/headless";
-import type { QuerySummary, QuerySummaryState } from "@coveo/headless";
 import { HeadlessInjectionKey } from "@/headlessKey";
-
-export interface ISummary {
-  state: QuerySummaryState;
-  querySummary: QuerySummary;
-}
+let engine: SearchEngine;
 export default {
-  name: "Summary",
+  name: "SearchSummary",
   async setup() {
-    const engine: SearchEngine = await inject(HeadlessInjectionKey)!;
-
+    engine = engine ?? (await inject(HeadlessInjectionKey)!);
+  },
+  data() {
     const querySummary = buildQuerySummary(engine);
-
+    const stateRef = reactive({ state: querySummary.state });
     return {
-      querySummary: ref(querySummary),
-      state: ref(querySummary.state),
+      querySummary: querySummary,
+      stateRef,
+      state: stateRef.state,
     };
+  },
+  created() {
+    this.querySummary.subscribe(() => {
+      this.stateRef.state = { ...this.querySummary.state };
+    });
   },
 };
 </script>

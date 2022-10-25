@@ -1,31 +1,37 @@
 <template>
-  <v-pagination :value="state.currentPage" :length="total" :total-visible="7" @input="onChange" />
+  <v-pagination
+    :value="currentPage"
+    :length="maxPage"
+    :total-visible="7"
+    @update:modelValue="onChange"
+  />
 </template>
 <script lang="ts">
-import { inject, ref } from "vue";
+import { inject, reactive, computed } from "vue";
 import { buildPager, type SearchEngine } from "@coveo/headless";
-import type { Pager, PagerState as HeadlessPagerState } from "@coveo/headless";
 import { HeadlessInjectionKey } from "@/headlessKey";
 
-export interface PagerState extends HeadlessPagerState {
-  total: number;
-}
-export interface IPager {
-  state: PagerState;
-  pager: Pager;
-}
-
+let engine: SearchEngine;
 export default {
-  name: "Pager",
+  name: "CoveoPager",
   async setup() {
-    const engine: SearchEngine = await inject(HeadlessInjectionKey)!;
+    engine = engine ?? (await inject(HeadlessInjectionKey)!);
+  },
+  data() {
     const pager = buildPager(engine);
-    const total = ref(engine.state.search.response.totalCountFiltered);
+    const stateRef = reactive({ state: pager.state });
+
     return {
-      pager: ref(pager),
-      state: ref(pager.state),
-      total
+      pager,
+      stateRef,
+      currentPage: computed(() => stateRef.state.currentPage),
+      maxPage: computed(() => stateRef.state.maxPage),
     };
+  },
+  created() {
+    this.pager.subscribe(() => {
+      this.stateRef.state = { ...this.pager.state };
+    });
   },
   methods: {
     onChange: function (n: number) {

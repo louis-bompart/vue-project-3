@@ -1,20 +1,20 @@
 <template>
   <section>
-    <h4 class="subtitle is-size-4 has-text-weight-bold">Refine By</h4>
+    <h4 class="text-h5">Refine By</h4>
     <div class="p-1">
-      <Facet field="objecttype" title="Object Type" />
-      <Facet field="filetype" title="File Type" />
-      <Facet field="author" title="Author" />
+      <CoveoFacet field="objecttype" title="Object Type" />
+      <CoveoFacet field="filetype" title="File Type" />
+      <CoveoFacet field="author" title="Author" />
     </div>
   </section>
 </template>
 
 <script lang="ts">
-import Facet from "./Facet.vue";
+import CoveoFacet from "./Facet.vue";
 
 export default {
-  name: "Facets",
-  components: { Facet },
+  name: "CoveoFacets",
+  components: { CoveoFacet },
   data: function () {
     return {
       open: false,

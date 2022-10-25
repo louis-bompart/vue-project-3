@@ -1,9 +1,9 @@
 <script lang="ts">
-import { inject, ref } from "vue";
+import { inject, computed, reactive } from "vue";
 import { buildFacet, type SearchEngine } from "@coveo/headless";
 
 import type { FacetValue as HeadlessFacetValue } from "@coveo/headless";
-import FacetValue from "./FacetValue.vue";
+import CoveoFacetValue from "./FacetValue.vue";
 import { z } from "zod";
 import { HeadlessInjectionKey } from "@/headlessKey";
 
@@ -11,23 +11,34 @@ const FacetProps = z.object({
   field: z.string(),
   title: z.string(),
 });
+let engine: SearchEngine;
 export default {
-  name: "Facet",
+  name: "CoveoFacet",
+  facet: undefined,
+  stateRef: undefined,
   props: {
     field: String,
     title: String,
   },
   components: {
-    FacetValue,
+    CoveoFacetValue,
   },
-  async setup(props) {
-    const parsedProps = FacetProps.parse(props);
-    const engine = await inject<Promise<SearchEngine>>(HeadlessInjectionKey);
+  async setup() {
+    engine =
+      engine ?? (await inject<Promise<SearchEngine>>(HeadlessInjectionKey)!);
+  },
+  data() {
+    const parsedProps = FacetProps.parse(this.$props);
     const facet = buildFacet(engine!, {
       options: { field: parsedProps.field, facetId: parsedProps.field },
     });
+    const stateRef = reactive({ state: facet.state });
 
-    return { facet:ref(facet), state:ref(facet.state) };
+    return {
+      facet,
+      stateRef,
+      facetValues: computed(() => stateRef.state.values),
+    };
   },
 
   methods: {
@@ -38,7 +49,7 @@ export default {
 
   created() {
     this.facet.subscribe(() => {
-      this.state = { ...this.facet.state };
+      this.stateRef.state = { ...this.facet.state };
     });
   },
 };
@@ -50,17 +61,17 @@ export default {
 }
 </style>
 <template>
-  <div class="mb-5">
-    <p class="is-size-5 mb-4">{{ title }}</p>
-    <div class="content">
-      <ul v-on:toggle="onToggle">
-        <FacetValue
+  <v-container fluid>
+    <p class="text-h6 mb-4">{{ title }}</p>
+    <v-row>
+      <v-col cols="12" sm="4" md="4">
+        <CoveoFacetValue
           @toggle="onToggle"
-          v-for="v in state.values"
-          v-bind:key="v.value"
-          v-bind:facetValue="v"
+          v-for="v in facetValues"
+          :key="v.value"
+          :facetValue="v"
         />
-      </ul>
-    </div>
-  </div>
+      </v-col>
+    </v-row>
+  </v-container>
 </template>
