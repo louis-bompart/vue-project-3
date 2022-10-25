@@ -44,7 +44,6 @@ import { inject } from "vue";
 import ResultLink from "./ResultLink.vue";
 import {
   buildResultList,
-  type ResultList,
   type SearchEngine,
 } from "@coveo/headless";
 import { HeadlessInjectionKey } from "@/headlessKey";

@@ -6,11 +6,13 @@
       </v-col>
     </v-row>
     <v-row>
-     <v-col cols="12" class="p1">
-      <CoveoFacet field="objecttype" title="Object Type" />
-      <CoveoFacet field="filetype" title="File Type" />
-      <CoveoFacet field="author" title="Author" />
-    </v-col>
+      <v-col cols="12" class="p1">
+        <v-expansion-panels>
+          <CoveoFacet field="objecttype" title="Object Type" />
+          <CoveoFacet field="filetype" title="File Type" />
+          <CoveoFacet field="author" title="Author" />
+        </v-expansion-panels>
+      </v-col>
     </v-row>
   </section>
 </template>

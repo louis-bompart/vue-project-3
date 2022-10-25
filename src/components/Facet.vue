@@ -61,21 +61,19 @@ export default {
 }
 </style>
 <template>
-  <v-container fluid>
-    <v-row>
-      <v-col cols="12">
-        <p class="text-h6 mb-4">{{ title }}</p>
-      </v-col>
-    </v-row>
-    <v-row>
-      <v-col cols="11">
-        <CoveoFacetValue
-          @toggle="onToggle"
-          v-for="v in facetValues"
-          :key="v.value"
-          :facetValue="v"
-        />
-      </v-col>
-    </v-row>
-  </v-container>
+  <v-expansion-panel>
+    <v-expansion-panel-title>
+      <template v-slot:default>
+        {{ title }}
+      </template>
+    </v-expansion-panel-title>
+    <v-expansion-panel-text>
+      <CoveoFacetValue
+        @toggle="onToggle"
+        v-for="v in facetValues"
+        :key="v.value"
+        :facetValue="v"
+      />
+    </v-expansion-panel-text>
+  </v-expansion-panel>
 </template>
