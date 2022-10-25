@@ -37,7 +37,7 @@ export default {
     const suggestions = computed(() => {
       return stateRef.state.suggestions.map((s: Suggestion) => s.rawValue);
     });
-    const clearable = computed(()=>Boolean(stateRef.state.value))
+    const clearable = computed(() => Boolean(stateRef.state.value));
     const search = ref(stateRef.state.value);
     const selected = ref("");
     watch(search, async (current) => {

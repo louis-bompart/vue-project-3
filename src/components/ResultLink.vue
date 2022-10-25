@@ -15,7 +15,6 @@
 import { computed, inject } from "vue";
 import {
   buildInteractiveResult,
-  type InteractiveResult,
   type Result,
   type SearchEngine,
 } from "@coveo/headless";

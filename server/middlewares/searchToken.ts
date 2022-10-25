@@ -1,12 +1,9 @@
-require('isomorphic-fetch');
-require('abortcontroller-polyfill');
-
-import {Request, Response, NextFunction} from 'express';
+import type { Request, Response, NextFunction } from "express";
 import {
   PlatformClient,
   RestUserIdType,
-  TokenModel,
-} from '@coveo/platform-client';
+  type TokenModel,
+} from "@coveo/platform-client";
 
 export function ensureTokenGenerated(
   req: Request,
@@ -27,17 +24,17 @@ export function ensureTokenGenerated(
        * You can also target a different region (e.g. https://platform-au.cloud.coveo.com)
        * See https://docs.coveo.com/en/2976/coveo-solutions/deployment-regions-and-strategies#data-residency
        */
-      host: process.env.PLATFORM_URL,
+      host: import.meta.env.VITE_APP_PLATFORM_URL,
       /**
        * The unique identifier of your Coveo organization.
        * To retrieve your org ID, see https://docs.coveo.com/en/148/manage-an-organization/retrieve-the-organization-id
        */
-      organizationId: process.env.ORGANIZATION_ID,
+      organizationId: import.meta.env.VITE_APP_ORGANIZATION_ID,
       /**
        * An API key with the impersonate privilege in the target organization.
        * See https://docs.coveo.com/en/1718/manage-an-organization/manage-api-keys#add-an-api-key
        */
-      accessToken: process.env.API_KEY!,
+      accessToken: import.meta.env.VITE_APP_API_KEY!,
     });
 
   platform.search
@@ -50,8 +47,8 @@ export function ensureTokenGenerated(
        */
       userIds: [
         {
-          name: process.env.USER_EMAIL!,
-          provider: 'Email Security Provider',
+          name: import.meta.env.VITE_APP_USER_EMAIL!,
+          provider: "Email Security Provider",
           type: RestUserIdType.User,
         },
       ],

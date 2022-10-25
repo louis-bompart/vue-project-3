@@ -1,1 +1,1 @@
-export const HeadlessInjectionKey = Symbol()
+export const HeadlessInjectionKey = Symbol();

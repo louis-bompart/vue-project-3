@@ -1,4 +1,4 @@
-import {Request, Response, NextFunction} from 'express';
+import type { Request, Response, NextFunction } from "express";
 
 export function environmentCheck(
   req: Request,
@@ -6,13 +6,14 @@ export function environmentCheck(
   next: NextFunction
 ) {
   if (
-    process.env.ORGANIZATION_ID === undefined ||
-    process.env.API_KEY === undefined ||
-    process.env.USER_EMAIL === undefined
+    import.meta.env.VITE_APP_ORGANIZATION_ID === undefined ||
+    import.meta.env.VITE_APP_API_KEY === undefined ||
+    import.meta.env.VITE_APP_USER_EMAIL === undefined
   ) {
+    console.log(JSON.stringify(process.env));
     const message =
       'Make sure to configure the environment variables in the ".env" file. Refer to the README to set up the server.';
-    next({message});
+    next({ message });
   } else {
     next();
   }

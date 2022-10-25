@@ -21,7 +21,8 @@ export default {
 };
 
 async function getEngine(): Promise<SearchEngine> {
-  const res = await fetch(getTokenEndpoint());
+  const endpoint = await getTokenEndpoint();
+  const res = await fetch(endpoint);
   const { token } = await res.json();
   return buildSearchEngine({
     configuration: {
@@ -29,7 +30,7 @@ async function getEngine(): Promise<SearchEngine> {
       organizationId: import.meta.env.VITE_APP_ORGANIZATION_ID!,
       accessToken: token,
       renewAccessToken: async () => {
-        const res = await fetch(getTokenEndpoint());
+        const res = await fetch(endpoint);
         const { token } = await res.json();
         return token;
       },

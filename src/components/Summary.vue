@@ -24,7 +24,7 @@ export default {
     return {
       querySummary: querySummary,
       stateRef,
-      state: computed(()=>stateRef.state),
+      state: computed(() => stateRef.state),
     };
   },
   created() {
