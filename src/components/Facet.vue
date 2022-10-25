@@ -62,9 +62,13 @@ export default {
 </style>
 <template>
   <v-container fluid>
-    <p class="text-h6 mb-4">{{ title }}</p>
     <v-row>
-      <v-col cols="12" sm="4" md="4">
+      <v-col cols="12">
+        <p class="text-h6 mb-4">{{ title }}</p>
+      </v-col>
+    </v-row>
+    <v-row>
+      <v-col cols="11">
         <CoveoFacetValue
           @toggle="onToggle"
           v-for="v in facetValues"

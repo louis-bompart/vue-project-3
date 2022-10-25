@@ -1,6 +1,4 @@
 <template>
-  <!-- <v-autocomplete icon="magnify" placeholder="Search" :clearable="true" :data="suggestions" :open-on-focus="true"
-    @typing="onTyping" @select="onSelect" @keydown.native="onKeyDown"></v-autocomplete> -->
   <v-autocomplete
     v-model="model"
     v-model:search="search"
@@ -8,6 +6,9 @@
     :loading="state.isLoadingSuggestions"
     @keydown="onKeyDown"
     return-object
+    :clearable="clearable"
+    menu-icon=""
+    prepend-inner-icon="mdi-magnify"
   >
   </v-autocomplete>
 </template>
@@ -36,6 +37,7 @@ export default {
     const suggestions = computed(() => {
       return stateRef.state.suggestions.map((s: Suggestion) => s.rawValue);
     });
+    const clearable = computed(()=>Boolean(stateRef.state.value))
     const search = ref(stateRef.state.value);
     const selected = ref("");
     watch(search, async (current) => {
@@ -48,6 +50,7 @@ export default {
       model: selected,
       search,
       suggestions,
+      clearable,
       state: stateRef.state,
     };
   },

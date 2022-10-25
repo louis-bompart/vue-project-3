@@ -1,6 +1,6 @@
 <template>
   <section>
-    <p v-if="state.hasResults" class="has-text-weight-bold">
+    <p v-if="state.hasResults" class="subtitle-1">
       Results {{ state.firstResult }}-{{ state.lastResult }} of
       {{ state.total }} in {{ state.durationInSeconds }} seconds
     </p>
@@ -9,7 +9,7 @@
 </template>
 
 <script lang="ts">
-import { inject, reactive } from "vue";
+import { computed, inject, reactive } from "vue";
 import { buildQuerySummary, type SearchEngine } from "@coveo/headless";
 import { HeadlessInjectionKey } from "@/headlessKey";
 let engine: SearchEngine;
@@ -24,7 +24,7 @@ export default {
     return {
       querySummary: querySummary,
       stateRef,
-      state: stateRef.state,
+      state: computed(()=>stateRef.state),
     };
   },
   created() {

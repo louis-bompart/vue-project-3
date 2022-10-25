@@ -1,9 +1,9 @@
 <template>
   <v-checkbox
     v-model="checkbox"
-    density="compact"
     :label="label"
     class="facet-label"
+    density="compact"
   >
   </v-checkbox>
 </template>
@@ -28,14 +28,3 @@ export default {
   },
 };
 </script>
-<style scoped>
-.facet-label {
-  width: 100%;
-}
-.facet-label label {
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  overflow: hidden;
-  width: 100%;
-}
-</style>
